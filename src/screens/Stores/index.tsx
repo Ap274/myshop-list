@@ -6,9 +6,10 @@ import { Caption } from "@components/Caption";
 import { ShopCard } from "@components/ShopCard";
 
 import { Container } from "./styles";
+import { ListEmpty } from "@components/ListEmpty";
 
 export function Stores() {
-    const [stores, setStores] = useState<string[]>(["Angeloni", "Giassi", "Fort Atacadista", "Hortifruti João Colin", "Especiarias Chilli"])
+    const [stores, setStores] = useState<string[]>(["Angeloni", "Giassi", "Fort Atacadista", "Hortifruti João Colin", "Especiarias Chilli", "Rango True", "Rancho Casa Mexicana", "Feng Cheng", "Mr Shawarma"])
 
     return (
         <Container>
@@ -27,6 +28,9 @@ export function Stores() {
                         title={item}
                     />
                 )}     
+                contentContainerStyle={stores.length === 0 && { flex: 1 }}
+                ListEmptyComponent={() => <ListEmpty message={"There are no items from any store to buy!"}/>}
+                showsVerticalScrollIndicator={false}
             />
 
         </Container>
