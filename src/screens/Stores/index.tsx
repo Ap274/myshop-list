@@ -4,9 +4,10 @@ import { FlatList } from "react-native";
 import { Header } from "@components/Header";
 import { Caption } from "@components/Caption";
 import { ShopCard } from "@components/ShopCard";
+import { ListEmpty } from "@components/ListEmpty";
+import { Button } from "@components/Button";
 
 import { Container } from "./styles";
-import { ListEmpty } from "@components/ListEmpty";
 
 export function Stores() {
     const [stores, setStores] = useState<string[]>(["Angeloni", "Giassi", "Fort Atacadista", "Hortifruti João Colin", "Especiarias Chilli", "Rango True", "Rancho Casa Mexicana", "Feng Cheng", "Mr Shawarma"])
@@ -31,6 +32,10 @@ export function Stores() {
                 contentContainerStyle={stores.length === 0 && { flex: 1 }}
                 ListEmptyComponent={() => <ListEmpty message={"There are no items from any store to buy!"}/>}
                 showsVerticalScrollIndicator={false}
+            />
+
+            <Button 
+                title="Create New Purchase"
             />
 
         </Container>
