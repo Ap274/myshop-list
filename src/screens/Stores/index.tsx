@@ -1,10 +1,15 @@
-import { Header } from "@components/Header";
+import { useState } from "react";
+import { FlatList } from "react-native";
 
-import { Container } from "./styles";
+import { Header } from "@components/Header";
 import { Caption } from "@components/Caption";
 import { ShopCard } from "@components/ShopCard";
 
+import { Container } from "./styles";
+
 export function Stores() {
+    const [stores, setStores] = useState<string[]>(["Angeloni", "Giassi", "Fort Atacadista", "Hortifruti João Colin", "Especiarias Chilli"])
+
     return (
         <Container>
             <Header />
@@ -14,15 +19,16 @@ export function Stores() {
                 subtitle="Things to buy :D"
             />
 
-            <ShopCard 
-                title="Angeloni"
+            <FlatList 
+                data={stores}
+                keyExtractor={item => item}
+                renderItem={({item}) => (
+                    <ShopCard 
+                        title={item}
+                    />
+                )}     
             />
-            <ShopCard 
-                title="Giassi"
-            />
-            <ShopCard 
-                title="Hortifruti"
-            />
+
         </Container>
     )
 }
