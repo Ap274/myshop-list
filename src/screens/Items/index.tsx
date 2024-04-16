@@ -5,6 +5,7 @@ import { ButtonIcon } from "@components/ButtonIcon";
 import { Button } from "@components/Button";
 
 import { Container, Form } from "./styles";
+import { Filter } from "@components/Filter";
 
 export function Items() {
     return (
@@ -26,6 +27,18 @@ export function Items() {
                 />
            </Form>
 
+            <Filter 
+                title="Butchers"
+                isActive
+            />
+            <Filter 
+                title="Fruits"
+                isActive
+            />
+            <Filter 
+                title="Dairy Free"
+                isActive
+            />
 
            <Button 
                 title="Remove item"
