@@ -3,6 +3,7 @@ import { Caption } from "@components/Caption";
 import { Button } from "@components/Button";
 
 import { Container, Content, Icon } from "./styles";
+import { Input } from "@components/Input";
 
 export function NewStore() {
     return (
@@ -16,6 +17,9 @@ export function NewStore() {
                     subtitle="Add a store to add purchases"
                 />
 
+                <Input 
+                    placeholder="Store name"
+                />
 
                 <Button 
                     title="Create"
