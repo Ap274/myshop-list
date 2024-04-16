@@ -9,7 +9,7 @@ export const Container = styled(TextInput)`
 
     ${({theme}) => css`
         background-color: ${theme.colors.gray_700};
-        color: ${theme.colors.white};
+        color: ${theme.colors.gray_100};
 
         font-size: ${theme.font_size.md}px;
         font-family: ${theme.font_family.regular};
