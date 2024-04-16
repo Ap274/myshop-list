@@ -4,7 +4,7 @@ import { StatusBar } from 'react-native';
 
 import theme from 'src/theme';
 
-import { NewStore } from '@screens/NewStore';
+import { Items } from '@screens/Items';
 
 import { Loading } from '@components/Loading';
 
@@ -19,7 +19,7 @@ export default function App() {
         translucent
       />
 
-      { fontsLoaded ? <NewStore/> : <Loading /> }
+      { fontsLoaded ? <Items/> : <Loading /> }
     </ThemeProvider>
   );
 }
