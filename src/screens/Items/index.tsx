@@ -8,12 +8,13 @@ import { ButtonIcon } from "@components/ButtonIcon";
 import { Button } from "@components/Button";
 import { Filter } from "@components/Filter";
 import { ItemCard } from "@components/ItemCard";
+import { ListEmpty } from "@components/ListEmpty";
 
 import { Container, Form, HeaderList, NumberOfPlayers } from "./styles";
 
 export function Items() {
     const [priority, setPriority] = useState("priority");
-    const [cartItems, setCartItems] = useState(['peanut', 'butter', 'chicken wings', 'barbecue sauce', 'coca cola', 'ice cream']);
+    const [cartItems, setCartItems] = useState(['Peanut', 'butter', 'Ice cream','chicken wings', 'strogonoff', 'coca cola','Sprite', 'Cheese', 'Parma ham']);
 
     return (
         <Container>
@@ -50,8 +51,7 @@ export function Items() {
                 />
 
                 <NumberOfPlayers>
-                    {priority.length}
-                    {/* Change after to Items */}
+                    {cartItems.length}
                 </NumberOfPlayers>
             </HeaderList>
 
@@ -64,10 +64,12 @@ export function Items() {
                     />
                 )}
                 showsVerticalScrollIndicator={false}
+                ListEmptyComponent={() => <ListEmpty message="Add an item to your shopping list"/>}
+                contentContainerStyle={[{paddingBottom: 20}, cartItems.length === 0 && {flex: 1}]}
             />
 
            <Button 
-                title="Remove item"
+                title="Remove store"
                 type="RED"
            />
         </Container>
