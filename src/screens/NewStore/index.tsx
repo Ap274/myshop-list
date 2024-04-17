@@ -6,12 +6,15 @@ import { Button } from "@components/Button";
 import { Input } from "@components/Input";
 
 import { Container, Content, Icon } from "./styles";
+import { useState } from "react";
 
 export function NewStore() {
+    const [storeName, setStoreName] = useState('');
+
     const navigation = useNavigation()
 
     function handleNew() {
-        navigation.navigate('items', {store: 'Mercadinho'})
+        navigation.navigate('items', {store: storeName})
     }
 
     return (
@@ -27,6 +30,7 @@ export function NewStore() {
 
                 <Input 
                     placeholder="Store name"
+                    onChangeText={setStoreName}
                 />
 
                 <Button 

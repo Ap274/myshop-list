@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FlatList } from "react-native";
+import { useRoute } from "@react-navigation/native";
 
 import { Header } from "@components/Header";
 import { Caption } from "@components/Caption";
@@ -12,16 +13,23 @@ import { ListEmpty } from "@components/ListEmpty";
 
 import { Container, Form, HeaderList, NumberOfItems } from "./styles";
 
+type RouteParams = {
+    store: string;
+}
+
 export function Items() {
     const [priority, setPriority] = useState("priority");
     const [cartItems, setCartItems] = useState([]);
+
+    const route = useRoute();
+    const { store } = route.params as RouteParams;
 
     return (
         <Container>
            <Header showBackButton/> 
 
            <Caption 
-                title="Item name"
+                title={store}
                 subtitle="Add the item by category"
            />
 
