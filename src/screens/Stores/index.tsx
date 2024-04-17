@@ -32,6 +32,10 @@ export function Stores() {
         }
     }
 
+    function handleOpenStore(store: string) {
+        navigation.navigate('items', { store: store })
+    }
+
     useFocusEffect(useCallback(() => {
         fetchStores();
     }, []))
@@ -51,6 +55,7 @@ export function Stores() {
                 renderItem={({item}) => (
                     <ShopCard 
                         title={item}
+                        onPress={() => handleOpenStore(item)}
                     />
                 )}     
                 contentContainerStyle={stores.length === 0 && { flex: 1 }}
