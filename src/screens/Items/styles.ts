@@ -25,7 +25,7 @@ export const HeaderList = styled.View`
     margin: 29px 0 18px;
 `;
 
-export const NumberOfPlayers = styled.Text`
+export const NumberOfItems = styled.Text`
     ${({theme}) => css`
         color: ${theme.colors.gray_200};
         font-family: ${theme.font_family.bold};

@@ -10,11 +10,11 @@ import { Filter } from "@components/Filter";
 import { ItemCard } from "@components/ItemCard";
 import { ListEmpty } from "@components/ListEmpty";
 
-import { Container, Form, HeaderList, NumberOfPlayers } from "./styles";
+import { Container, Form, HeaderList, NumberOfItems } from "./styles";
 
 export function Items() {
     const [priority, setPriority] = useState("priority");
-    const [cartItems, setCartItems] = useState(['Peanut', 'butter', 'Ice cream','chicken wings', 'strogonoff', 'coca cola','Sprite', 'Cheese', 'Parma ham']);
+    const [cartItems, setCartItems] = useState([]);
 
     return (
         <Container>
@@ -50,9 +50,9 @@ export function Items() {
                     showsHorizontalScrollIndicator={false}
                 />
 
-                <NumberOfPlayers>
+                <NumberOfItems>
                     {cartItems.length}
-                </NumberOfPlayers>
+                </NumberOfItems>
             </HeaderList>
 
             <FlatList 
