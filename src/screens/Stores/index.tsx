@@ -1,12 +1,14 @@
-import { useState } from "react";
+import { useState, useCallback } from "react";
+import { useNavigation, useFocusEffect } from "@react-navigation/native";
 import { FlatList } from "react-native";
-import { useNavigation } from "@react-navigation/native";
 
 import { Header } from "@components/Header";
 import { Caption } from "@components/Caption";
 import { ShopCard } from "@components/ShopCard";
 import { ListEmpty } from "@components/ListEmpty";
 import { Button } from "@components/Button";
+
+import { storesGetAll } from "@storage/store/storesGetAll";
 
 import { Container } from "./styles";
 
@@ -18,6 +20,21 @@ export function Stores() {
     function handleNewStore() {
         navigation.navigate('new');
     }
+
+    async function fetchStores() {
+        try {
+            const data = await storesGetAll();
+            setStores(data);
+
+        } catch (error) {
+            console.log(error);
+            throw error;
+        }
+    }
+
+    useFocusEffect(useCallback(() => {
+        fetchStores();
+    }, []))
 
     return (
         <Container>
