@@ -23,13 +23,14 @@ export function Items() {
 
     const route = useRoute();
     const { store } = route.params as RouteParams;
+    const normalizedStore = store.trim();
 
     return (
         <Container>
            <Header showBackButton/> 
 
            <Caption 
-                title={store}
+                title={normalizedStore}
                 subtitle="Add the item by category"
            />
 
