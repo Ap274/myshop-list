@@ -7,11 +7,13 @@ import { Input } from "@components/Input";
 import { ButtonIcon } from "@components/ButtonIcon";
 import { Button } from "@components/Button";
 import { Filter } from "@components/Filter";
+import { ItemCard } from "@components/ItemCard";
 
 import { Container, Form, HeaderList, NumberOfPlayers } from "./styles";
 
 export function Items() {
     const [priority, setPriority] = useState("priority");
+    const [cartItems, setCartItems] = useState(['peanut', 'butter', 'chicken wings', 'barbecue sauce', 'coca cola', 'ice cream']);
 
     return (
         <Container>
@@ -52,6 +54,17 @@ export function Items() {
                     {/* Change after to Items */}
                 </NumberOfPlayers>
             </HeaderList>
+
+            <FlatList 
+                data={cartItems}
+                keyExtractor={item => item}
+                renderItem={({item}) => (
+                    <ItemCard 
+                        name={item}
+                    />
+                )}
+                showsVerticalScrollIndicator={false}
+            />
 
            <Button 
                 title="Remove item"
