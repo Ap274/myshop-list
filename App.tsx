@@ -4,9 +4,9 @@ import { StatusBar } from 'react-native';
 
 import theme from 'src/theme';
 
-import { Items } from '@screens/Items';
-
 import { Loading } from '@components/Loading';
+
+import { Routes } from './src/routes';
 
 export default function App() {
   const [fontsLoaded] = useFonts({ Quicksand_400Regular, Quicksand_700Bold });
@@ -19,7 +19,7 @@ export default function App() {
         translucent
       />
 
-      { fontsLoaded ? <Items/> : <Loading /> }
+      { fontsLoaded ? <Routes/> : <Loading /> }
     </ThemeProvider>
   );
 }
