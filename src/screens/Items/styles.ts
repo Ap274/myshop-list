@@ -4,7 +4,7 @@ import styled, { css } from "styled-components/native";
 export const Container = styled(SafeAreaView)`
     flex: 1;
     background-color: ${({theme}) => theme.colors.gray_600};
-    padding: 30px;
+    padding: 24px;
 `;
 
 export const Form = styled.View` 
