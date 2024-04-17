@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import { STORE_COLLECTION } from "@storage/storageConfig";
 
-export async function storeGetAll() {
+export async function storesGetAll() {
     try {
         const storage = await AsyncStorage.getItem(STORE_COLLECTION);
         const stores: string[] = storage ? JSON.parse(storage) : [];
