@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { Alert, FlatList, TextInput } from "react-native";
-import { useRoute } from "@react-navigation/native";
+import { useRoute, useNavigation } from "@react-navigation/native";
 
 import { Header } from "@components/Header";
 import { Caption } from "@components/Caption";
@@ -15,6 +15,7 @@ import { ItemStorageDTO } from "@storage/item/ItemStorageDTO";
 import { itemAddByStore } from "@storage/item/itemAddByStore";
 import { itemsGetByStoreAndPriority } from "@storage/item/itemsGetByStoreAndPriority";
 import { itemRemoveByStore } from "@storage/item/itemRemoveByStore";
+import { storeRemoveByName } from "@storage/store/storeRemoveByName";
 
 import { Container, Form, HeaderList, NumberOfItems } from "./styles";
 import { AppError } from "@utils/AppError";
@@ -27,6 +28,8 @@ export function Items() {
     const [newItemName, setNewItemName] = useState('');
     const [priority, setPriority] = useState("priority");
     const [cartItems, setCartItems] = useState<ItemStorageDTO[]>([]);
+
+    const navigation = useNavigation();
 
     const route = useRoute();
     const { store } = route.params as RouteParams;
@@ -79,6 +82,28 @@ export function Items() {
             console.log(error);
             Alert.alert('Item remove', 'Unable to remove this item');
         }
+    }
+
+    async function storeRemove() {
+        try {
+            await storeRemoveByName(normalizedStore);
+            navigation.navigate('stores');
+
+        } catch (error) {
+            console.log(error);
+            Alert.alert('Remove store', 'Unable to remove store.')
+        }
+    }
+
+    async function handleStoreRemove() {
+        Alert.alert(
+            'Remove',
+            'Do you want to remove the store?',
+            [
+                { text: 'Yes', onPress: () => storeRemove()},
+                { text: 'No', style: 'cancel' }
+            ]
+        )
     }
 
     useEffect(() => {
@@ -148,6 +173,7 @@ export function Items() {
            <Button 
                 title="Remove store"
                 type="RED"
+                onPress={handleStoreRemove}
            />
         </Container>
     )
