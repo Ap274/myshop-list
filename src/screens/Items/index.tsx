@@ -14,7 +14,7 @@ import { ListEmpty } from "@components/ListEmpty";
 import { ItemStorageDTO } from "@storage/item/ItemStorageDTO";
 import { itemAddByStore } from "@storage/item/itemAddByStore";
 import { itemsGetByStoreAndPriority } from "@storage/item/itemsGetByStoreAndPriority";
-import { itemsGetByStore } from "@storage/item/itemsGetByStore";
+import { itemRemoveByStore } from "@storage/item/itemRemoveByStore";
 
 import { Container, Form, HeaderList, NumberOfItems } from "./styles";
 import { AppError } from "@utils/AppError";
@@ -47,7 +47,7 @@ export function Items() {
         try {
             await itemAddByStore(newItem, normalizedStore);
             newItemNameInputRef.current?.blur();
-
+            
             setNewItemName('');
             fetchItemsByPriority();
 
@@ -68,6 +68,16 @@ export function Items() {
         } catch (error) {
             console.log(error);
             Alert.alert('Items', 'Unable to load items of selected priority.')
+        }
+    }
+
+    async function handleItemRemove(itemName: string) {
+        try {
+            await itemRemoveByStore(itemName, normalizedStore);
+            fetchItemsByPriority();
+        } catch (error) {
+            console.log(error);
+            Alert.alert('Item remove', 'Unable to remove this item');
         }
     }
 
@@ -127,6 +137,7 @@ export function Items() {
                 renderItem={({item}) => (
                     <ItemCard 
                         name={item.name}
+                        onRemove={() => handleItemRemove(item.name)}
                     />
                 )}
                 showsVerticalScrollIndicator={false}
