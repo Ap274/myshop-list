@@ -17,6 +17,7 @@ import { itemsGetByStore } from "@storage/item/itemsGetByStore";
 
 import { Container, Form, HeaderList, NumberOfItems } from "./styles";
 import { AppError } from "@utils/AppError";
+import { itemsGetByStoreAndPriority } from "@storage/item/itemsGetByStoreAndPriority";
 
 type RouteParams = {
     store: string;
@@ -44,8 +45,6 @@ export function Items() {
 
         try {
             await itemAddByStore(newItem, normalizedStore);
-            const items = await itemsGetByStore(normalizedStore);
-            console.log(items);
 
         } catch (error) {
             if (error instanceof AppError) {
@@ -54,6 +53,16 @@ export function Items() {
                 console.log(error);
                 Alert.alert('New Item', 'Unable to add');
             }
+        }
+    }
+
+    async function fetchItemsByPriority() {
+        try {
+            const itemsByPriority = await itemsGetByStoreAndPriority(store, priority);
+            setCartItems(itemsByPriority);
+        } catch (error) {
+            console.log(error);
+            Alert.alert('Items', 'Unable to load items of selected priority.')
         }
     }
 
