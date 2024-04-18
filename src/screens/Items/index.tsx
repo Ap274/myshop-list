@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Alert, FlatList } from "react-native";
+import { useState, useEffect, useRef } from "react";
+import { Alert, FlatList, TextInput } from "react-native";
 import { useRoute } from "@react-navigation/native";
 
 import { Header } from "@components/Header";
@@ -13,11 +13,11 @@ import { ListEmpty } from "@components/ListEmpty";
 
 import { ItemStorageDTO } from "@storage/item/ItemStorageDTO";
 import { itemAddByStore } from "@storage/item/itemAddByStore";
+import { itemsGetByStoreAndPriority } from "@storage/item/itemsGetByStoreAndPriority";
 import { itemsGetByStore } from "@storage/item/itemsGetByStore";
 
 import { Container, Form, HeaderList, NumberOfItems } from "./styles";
 import { AppError } from "@utils/AppError";
-import { itemsGetByStoreAndPriority } from "@storage/item/itemsGetByStoreAndPriority";
 
 type RouteParams = {
     store: string;
@@ -25,13 +25,14 @@ type RouteParams = {
 
 export function Items() {
     const [newItemName, setNewItemName] = useState('');
-    
     const [priority, setPriority] = useState("priority");
     const [cartItems, setCartItems] = useState<ItemStorageDTO[]>([]);
 
     const route = useRoute();
     const { store } = route.params as RouteParams;
     const normalizedStore = store.trim();
+
+    const newItemNameInputRef = useRef<TextInput>(null);
 
     async function handleAddItem() {
         if(newItemName.trim().length === 0) {
@@ -45,6 +46,9 @@ export function Items() {
 
         try {
             await itemAddByStore(newItem, normalizedStore);
+            newItemNameInputRef.current?.blur();
+
+            setNewItemName('');
             fetchItemsByPriority();
 
         } catch (error) {
@@ -59,7 +63,7 @@ export function Items() {
 
     async function fetchItemsByPriority() {
         try {
-            const itemsByPriority = await itemsGetByStoreAndPriority(store, priority);
+            const itemsByPriority = await itemsGetByStoreAndPriority(normalizedStore, priority);
             setCartItems(itemsByPriority);
         } catch (error) {
             console.log(error);
@@ -82,9 +86,13 @@ export function Items() {
 
            <Form>
                 <Input 
+                    inputRef={newItemNameInputRef}
                     onChangeText={setNewItemName}
+                    value={newItemName}
                     placeholder="Item name"
                     autoCorrect={false}
+                    onSubmitEditing={handleAddItem}
+                    returnKeyType="done"
                 />
 
                 <ButtonIcon 
