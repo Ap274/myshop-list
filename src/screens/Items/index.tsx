@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { FlatList } from "react-native";
+import { Alert, FlatList } from "react-native";
 import { useRoute } from "@react-navigation/native";
 
 import { Header } from "@components/Header";
@@ -11,19 +11,51 @@ import { Filter } from "@components/Filter";
 import { ItemCard } from "@components/ItemCard";
 import { ListEmpty } from "@components/ListEmpty";
 
+import { ItemStorageDTO } from "@storage/item/ItemStorageDTO";
+import { itemAddByStore } from "@storage/item/itemAddByStore";
+import { itemsGetByStore } from "@storage/item/itemsGetByStore";
+
 import { Container, Form, HeaderList, NumberOfItems } from "./styles";
+import { AppError } from "@utils/AppError";
 
 type RouteParams = {
     store: string;
 }
 
 export function Items() {
+    const [newItemName, setNewItemName] = useState('');
+    
     const [priority, setPriority] = useState("priority");
-    const [cartItems, setCartItems] = useState([]);
+    const [cartItems, setCartItems] = useState<ItemStorageDTO[]>([]);
 
     const route = useRoute();
     const { store } = route.params as RouteParams;
     const normalizedStore = store.trim();
+
+    async function handleAddItem() {
+        if(newItemName.trim().length === 0) {
+            return Alert.alert('New Item', 'Enter the name of the item to add');
+        }
+
+        const newItem = {
+            name: newItemName,
+            priority: priority,
+        }
+
+        try {
+            await itemAddByStore(newItem, normalizedStore);
+            const items = await itemsGetByStore(normalizedStore);
+            console.log(items);
+
+        } catch (error) {
+            if (error instanceof AppError) {
+                Alert.alert('New Item', error.message)
+            } else {
+                console.log(error);
+                Alert.alert('New Item', 'Unable to add');
+            }
+        }
+    }
 
     return (
         <Container>
@@ -36,11 +68,14 @@ export function Items() {
 
            <Form>
                 <Input 
+                    onChangeText={setNewItemName}
                     placeholder="Item name"
+                    autoCorrect={false}
                 />
 
                 <ButtonIcon 
                     icon="add-circle"
+                    onPress={handleAddItem}
                 />
            </Form>
 
@@ -65,7 +100,7 @@ export function Items() {
             </HeaderList>
 
             <FlatList 
-                data={cartItems}
+                data={newItemName}
                 keyExtractor={item => item}
                 renderItem={({item}) => (
                     <ItemCard 
@@ -74,7 +109,7 @@ export function Items() {
                 )}
                 showsVerticalScrollIndicator={false}
                 ListEmptyComponent={() => <ListEmpty message="Add an item to your shopping list"/>}
-                contentContainerStyle={[{paddingBottom: 20}, cartItems.length === 0 && {flex: 1}]}
+                contentContainerStyle={[{paddingBottom: 20}, newItemName.length === 0 && {flex: 1}]}
             />
 
            <Button 
