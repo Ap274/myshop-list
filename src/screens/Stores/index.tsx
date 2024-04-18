@@ -13,7 +13,7 @@ import { storesGetAll } from "@storage/store/storesGetAll";
 import { Container } from "./styles";
 
 export function Stores() {
-    const [stores, setStores] = useState<string[]>(["Angeloni", "Giassi", "Fort Atacadista", "Hortifruti João Colin", "Especiarias Chilli", "Rango True", "Rancho Casa Mexicana", "Feng Cheng", "Mr Shawarma"]);
+    const [stores, setStores] = useState<string[]>([]);
 
     const navigation = useNavigation();
 
