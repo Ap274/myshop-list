@@ -10,6 +10,7 @@ import { Button } from "@components/Button";
 import { Filter } from "@components/Filter";
 import { ItemCard } from "@components/ItemCard";
 import { ListEmpty } from "@components/ListEmpty";
+import { Loading } from "@components/Loading";
 
 import { ItemStorageDTO } from "@storage/item/ItemStorageDTO";
 import { itemAddByStore } from "@storage/item/itemAddByStore";
@@ -25,6 +26,7 @@ type RouteParams = {
 }
 
 export function Items() {
+    const [isLoading, setIsLoading] = useState(true);
     const [newItemName, setNewItemName] = useState('');
     const [priority, setPriority] = useState("priority");
     const [cartItems, setCartItems] = useState<ItemStorageDTO[]>([]);
@@ -66,11 +68,16 @@ export function Items() {
 
     async function fetchItemsByPriority() {
         try {
+            setIsLoading(true);
+
             const itemsByPriority = await itemsGetByStoreAndPriority(normalizedStore, priority);
+
             setCartItems(itemsByPriority);
         } catch (error) {
             console.log(error);
             Alert.alert('Items', 'Unable to load items of selected priority.')
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -156,19 +163,22 @@ export function Items() {
                 </NumberOfItems>
             </HeaderList>
 
-            <FlatList 
-                data={cartItems}
-                keyExtractor={item => item.name}
-                renderItem={({item}) => (
-                    <ItemCard 
-                        name={item.name}
-                        onRemove={() => handleItemRemove(item.name)}
+            {
+                isLoading ? <Loading /> : 
+                    <FlatList 
+                        data={cartItems}
+                        keyExtractor={item => item.name}
+                        renderItem={({item}) => (
+                            <ItemCard 
+                                name={item.name}
+                                onRemove={() => handleItemRemove(item.name)}
+                            />
+                        )}
+                        showsVerticalScrollIndicator={false}
+                        ListEmptyComponent={() => <ListEmpty message="Add an item to your shopping list"/>}
+                        contentContainerStyle={[{paddingBottom: 20}, cartItems.length === 0 && {flex: 1}]}
                     />
-                )}
-                showsVerticalScrollIndicator={false}
-                ListEmptyComponent={() => <ListEmpty message="Add an item to your shopping list"/>}
-                contentContainerStyle={[{paddingBottom: 20}, cartItems.length === 0 && {flex: 1}]}
-            />
+            }
 
            <Button 
                 title="Remove store"
