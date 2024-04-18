@@ -72,7 +72,7 @@ export function Stores() {
             }
 
             <Button 
-                title="Create New Purchase"
+                title="Create New Store"
                 onPress={handleNewStore}
             />
 
