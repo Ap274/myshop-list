@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Alert, FlatList } from "react-native";
 import { useRoute } from "@react-navigation/native";
 
@@ -45,6 +45,7 @@ export function Items() {
 
         try {
             await itemAddByStore(newItem, normalizedStore);
+            fetchItemsByPriority();
 
         } catch (error) {
             if (error instanceof AppError) {
@@ -65,6 +66,10 @@ export function Items() {
             Alert.alert('Items', 'Unable to load items of selected priority.')
         }
     }
+
+    useEffect(() => {
+        fetchItemsByPriority();
+    }, [priority]);
 
     return (
         <Container>
@@ -109,16 +114,16 @@ export function Items() {
             </HeaderList>
 
             <FlatList 
-                data={newItemName}
-                keyExtractor={item => item}
+                data={cartItems}
+                keyExtractor={item => item.name}
                 renderItem={({item}) => (
                     <ItemCard 
-                        name={item}
+                        name={item.name}
                     />
                 )}
                 showsVerticalScrollIndicator={false}
                 ListEmptyComponent={() => <ListEmpty message="Add an item to your shopping list"/>}
-                contentContainerStyle={[{paddingBottom: 20}, newItemName.length === 0 && {flex: 1}]}
+                contentContainerStyle={[{paddingBottom: 20}, cartItems.length === 0 && {flex: 1}]}
             />
 
            <Button 
